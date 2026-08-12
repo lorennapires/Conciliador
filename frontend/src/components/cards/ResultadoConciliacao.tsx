@@ -21,6 +21,7 @@ export function ResultadoConciliacao({ resultado }: Props) {
   const {
     combinacoes_encontradas = [],
     valor_buscado,
+    tolerancia,
     itens_considerados,
     total_itens_planilha,
   } = resultado ?? {};
@@ -33,6 +34,7 @@ export function ResultadoConciliacao({ resultado }: Props) {
     >
       <p className="mb-4 text-center text-sm text-slate-400">
         {itens_considerados ?? "?"} de {total_itens_planilha ?? "?"} valor(es) analisado(s) em busca de {formatarMoeda(valor_buscado)}
+        {!!tolerancia && ` (tolerância de ± ${formatarMoeda(tolerancia)})`}
       </p>
 
       {combinacoes_encontradas.length === 0 ? (
@@ -55,6 +57,11 @@ export function ResultadoConciliacao({ resultado }: Props) {
 
                 <span className="text-sm text-slate-400">
                   Soma: {formatarMoeda(combinacao.soma)}
+                  {combinacao.diferenca !== 0 && (
+                    <span className="ml-2 text-amber-300">
+                      ({combinacao.diferenca > 0 ? "+" : ""}{formatarMoeda(combinacao.diferenca)})
+                    </span>
+                  )}
                 </span>
               </div>
 
@@ -66,13 +73,13 @@ export function ResultadoConciliacao({ resultado }: Props) {
                   >
                     <div className="flex items-center gap-2">
 
-                    <span className="rounded-md border border-slate-600 bg-slate-800/80 px-2 py-0.5 text-xs font-semibold text-slate-300">
-                    Linha {item.linha}
-                    </span>
+                      <span className="rounded-md border border-slate-600 bg-slate-800/80 px-2 py-0.5 text-xs font-semibold text-slate-300">
+                        Linha {item.linha}
+                      </span>
 
-                    <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-xs font-semibold text-cyan-300">
-                    Coluna {item.coluna_numero}
-                    </span>
+                      <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-xs font-semibold text-cyan-300">
+                        Coluna {item.coluna_numero}
+                      </span>
 
                     </div>
 
